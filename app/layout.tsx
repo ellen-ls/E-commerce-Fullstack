@@ -7,6 +7,7 @@ import { ModalProvider } from "@/provider/modal-provider";
 import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
+import prismadb from "@/lib/prismadb"
 export const metadata: Metadata = {
   title: "Admin Dashboard",
   description: "Admin Dashboard",
@@ -17,6 +18,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const store = prismadb
   return (
     <ClerkProvider>
     <html lang="en">
