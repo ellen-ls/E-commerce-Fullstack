@@ -8,6 +8,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 import prismadb from "@/lib/prismadb"
+import { ToasterProvider } from "@/provider/toast-provider";
 export const metadata: Metadata = {
   title: "Admin Dashboard",
   description: "Admin Dashboard",
@@ -19,11 +20,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const store = prismadb
+  
   return (
     <ClerkProvider>
     <html lang="en">
       <body className={inter.className}>
+        <ToasterProvider/>
         <ModalProvider/>
         {children}
         </body>
