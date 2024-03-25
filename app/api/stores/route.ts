@@ -9,7 +9,7 @@ export async function POST(
             const {userId} = auth()
             const body = await req.json()
 
-            const { name} = body
+            const {name} = body
 
             if(!userId){
                 return new NextResponse("Unauthorized", { status: 401})
@@ -31,7 +31,7 @@ export async function POST(
 
         }catch(error){
             console.log('STORES_POST', error);
-            return new NextResponse("Interal error", { status: 500})
+            return new NextResponse("Internal error", { status: 500})
 
         }
     

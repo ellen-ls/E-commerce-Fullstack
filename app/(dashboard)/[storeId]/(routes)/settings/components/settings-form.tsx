@@ -7,10 +7,13 @@ import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Store } from "@prisma/client"
+import axios from "axios"
 import { Trash } from "lucide-react"
+import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { z } from "zod"
+import toast from "react-hot-toast"
+import * as z  from "zod"
 
 
 interface SettingsFormProps {
@@ -26,9 +29,13 @@ type SettingsFormValues = z.infer<typeof formSchema>
 export const SettingsForm:React.FC<SettingsFormProps> = ({
 initialData
 }) => {
+
+    const params = useParams()
+    const router = useRouter()
+
     const [open, setOpen] = useState(false)
     const[loading, setloading]= useState(false)
-
+    
 
     const form = useForm<SettingsFormValues>({
         resolver:zodResolver(formSchema),
@@ -37,7 +44,16 @@ initialData
     })
 
     const onSubmit = async (data: SettingsFormValues)=>{
-        console.log(data)
+        try{
+          setloading(true)
+          await axios.patch(`/api/stores/${params.storeId}`, data)
+          router.refresh()
+          toast.success("Store update") 
+        }catch(error){
+            toast.error("Something went wrong")
+        }finally{
+            setloading(false)
+        } 
     }
     return (
         <>
@@ -48,9 +64,10 @@ initialData
             />
 
             <Button
+            disabled={loading}
             variant='destructive'
             size='icon'
-            onClick={()=>{}}
+            onClick={()=>{setOpen(true)}}
             >
                 <Trash className="h-4 w-4"></Trash>
             </Button>
@@ -66,7 +83,7 @@ initialData
                         <FormItem>
                         <FormLabel>Name</FormLabel>
                         <FormControl>
-                            <Input disabled={loading} placeholder="Store name"></Input>
+                            <Input disabled={loading} placeholder="Store name" {...field}></Input>
                         </FormControl>
                         <FormMessage></FormMessage>
                         </FormItem>
