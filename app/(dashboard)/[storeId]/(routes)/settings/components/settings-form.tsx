@@ -8,6 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Heading } from "@/components/ui/heading"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
+import { useOrigin } from "@/hooks/use-origin"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Store } from "@prisma/client"
 import axios from "axios"
@@ -35,8 +36,9 @@ initialData
 
     const params = useParams()
     const router = useRouter()
+    const origin = useOrigin()
 
-    const [open, setOpen] = useState(false)
+    const[open, setOpen] = useState(false)
     const[loading, setloading]= useState(false)
     
 
@@ -123,8 +125,8 @@ initialData
         </Form>
         <Separator/>
         <ApiAlert
-        title="test"
-        description="test-desc"
+        title="NEXT_PUBLIC_API_URL"
+        description={`${origin}/api/${params.storeId}`}
         variant="public"
         />
         </>
